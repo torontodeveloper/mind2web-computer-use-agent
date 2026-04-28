@@ -9,6 +9,7 @@ checkpoints/
 hf_cache/
 
 # Dataset files
+data/
 data_candidate_generation/
 action_results/
 results/
