@@ -1,13 +1,21 @@
-import logging
 import os
+
+os.environ["HF_DATASETS_CACHE"] = "/content/drive/MyDrive/Mind2Web/hf_cache"
+os.environ["HF_HOME"] = "/content/drive/MyDrive/Mind2Web/hf_cache"
+import json
+import logging
+import pdb
+import random
 
 import hydra
 import torch
 from dataloader import CandidateRankDataset, get_data_split
 from hydra.core.hydra_config import HydraConfig
 from model import CrossEncoder
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 from torch.utils.data import DataLoader
+import psutil
+
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +23,7 @@ logger = logging.getLogger(__name__)
 @hydra.main(version_base=None, config_path="conf", config_name="config")
 def main(cfg: DictConfig):
 
-    logger.info(f"Model: {cfg.model.model_name_or_path}")
+    print(f"Use model ************** {cfg.model.model_name_or_path}**********")
     output_dir = HydraConfig.get().runtime.output_dir
 
     train_data = get_data_split(split_name="train", max_examples=9999)

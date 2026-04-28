@@ -1,3 +1,8 @@
+import os
+os.environ["HF_DATASETS_CACHE"] = "/content/drive/MyDrive/Mind2Web/hf_cache"
+os.environ["HF_HOME"] = "/content/drive/MyDrive/Mind2Web/hf_cache"
+os.environ["HF_HUB_CACHE"] = "/content/drive/MyDrive/Mind2Web/hf_cache/hub"
+
 import json
 import pathlib
 import random
@@ -131,8 +136,9 @@ def get_data_split(split_name="train", max_examples=9999):
         if len(raw_examples) >= max_examples:
             break
 
+    print(f'I am loading {len(raw_examples)} dataset')
     raw_examples = raw_examples[:max_examples]
-    print(f"Loaded {len(raw_examples)} examples from {split_name}")
+    print(f"Loaded {len(raw_examples)} raw examples")
 
     formatted = []
     skipped = 0
@@ -167,9 +173,9 @@ def get_data_split(split_name="train", max_examples=9999):
             ]
             formatted.append(sample)
 
-        except Exception:
+        except Exception as e:
             skipped += 1
-            continue
+            continue  # remove verbose printing here too
 
     print(f"Formatted {len(formatted)} examples, skipped {skipped}")
 
