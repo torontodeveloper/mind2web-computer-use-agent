@@ -1,0 +1,43 @@
+# Model checkpoints and weights
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+*.ckpt
+
+# HuggingFace cache
+hf_cache/
+
+# Dataset files
+data_candidate_generation/
+action_results/
+results/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+LOG_FILE_PATH/
+
+# macOS
+.DS_Store
+
+# Virtual envs
+angelinababy/
+venv/
+.env
+
+# Hydra outputs
+outputs/
+multirun/
