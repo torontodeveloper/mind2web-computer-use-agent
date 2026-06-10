@@ -1,7 +1,12 @@
 import os
-os.environ["HF_DATASETS_CACHE"] = "/content/drive/MyDrive/Mind2Web/hf_cache"
-os.environ["HF_HOME"] = "/content/drive/MyDrive/Mind2Web/hf_cache"
-os.environ["HF_HUB_CACHE"] = "/content/drive/MyDrive/Mind2Web/hf_cache/hub"
+
+os.environ["HF_DATASETS_CACHE"] = (
+    "/content/drive/MyDrive/mind2web-computer-use-agent/hf_cache"
+)
+os.environ["HF_HOME"] = "/content/drive/MyDrive/mind2web-computer-use-agent/hf_cache"
+os.environ["HF_HUB_CACHE"] = (
+    "/content/drive/MyDrive/mind2web-computer-use-agent/hf_cache/hub"
+)
 
 import json
 import pathlib
@@ -106,20 +111,17 @@ class CandidateRankDataset(Dataset):
         action_reprs = sample.get("action_reprs", [])
         previous_actions = "; ".join(action_reprs[-3:]) if action_reprs else ""
 
-        query = (
-            f"task is: {confirmed_task}\n"
-            f"Previous actions: {previous_actions}"
-        )
+        query = f"task is: {confirmed_task}\nPrevious actions: {previous_actions}"
 
         return InputExample(texts=[candidate[1], query], label=label)
 
 
 def get_data_split(split_name="train", max_examples=9999):
     split_dir_map = {
-        "train": "/content/drive/MyDrive/Mind2Web/data_candidate_generation/train",
-        "test_website": "/content/drive/MyDrive/Mind2Web/data_candidate_generation/test_website",
-        "test_task": "/content/drive/MyDrive/Mind2Web/data_candidate_generation/test_task",
-        "test_domain": "/content/drive/MyDrive/Mind2Web/data_candidate_generation/test_domain",
+        "train": "/content/drive/MyDrive/mind2web-computer-use-agent/data_candidate_generation/train",
+        "test_website": "/content/drive/MyDrive/mind2web-computer-use-agent/data_candidate_generation/test_website",
+        "test_task": "/content/drive/MyDrive/mind2web-computer-use-agent/data_candidate_generation/test_task",
+        "test_domain": "/content/drive/MyDrive/mind2web-computer-use-agent/data_candidate_generation/test_domain",
     }
     shard_dir = split_dir_map.get(split_name)
     shard_files = sorted(glob.glob(f"{shard_dir}/shard_*.json"))
@@ -136,7 +138,7 @@ def get_data_split(split_name="train", max_examples=9999):
         if len(raw_examples) >= max_examples:
             break
 
-    print(f'I am loading {len(raw_examples)} dataset')
+    print(f"I am loading {len(raw_examples)} dataset")
     raw_examples = raw_examples[:max_examples]
     print(f"Loaded {len(raw_examples)} raw examples")
 

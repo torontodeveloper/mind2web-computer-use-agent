@@ -25,9 +25,9 @@ data:
   data_path: null
   train_split_file: data/train/*.json
   test_split_files:
-    test_domain: /content/drive/MyDrive/Mind2Web/data_candidate_generation/test_domain/shard_*.json
-    test_task: /content/drive/MyDrive/Mind2Web/data_candidate_generation/test_task/shard_*.json
-    test_website: /content/drive/MyDrive/Mind2Web/data_candidate_generation/test_website/shard_*.json
+    test_domain: /content/drive/MyDrive/mind2web-computer-use-agent/data_candidate_generation/test_domain/shard_*.json
+    test_task: /content/drive/MyDrive/mind2web-computer-use-agent/data_candidate_generation/test_task/shard_*.json
+    test_website: /content/drive/MyDrive/mind2web-computer-use-agent/data_candidate_generation/test_website/shard_*.json
   score_file: null
 
 run_id: "full"

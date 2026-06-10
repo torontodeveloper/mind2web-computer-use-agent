@@ -77,7 +77,7 @@ def format_candidate_from_dom(el: dict) -> str:
 def build_query(task: str, previous_actions: list[str]) -> str:
     """Reproduce the query format from CandidateRankDataset.__getitem__()."""
     previous = "; ".join(previous_actions[-3:]) if previous_actions else ""
-    return f"task is: {task}\n" f"Previous actions: {previous}"
+    return f"task is: {task}\nPrevious actions: {previous}"
 
 
 # ── Extract elements from live DOM, matching Mind2Web fields ─
@@ -304,11 +304,11 @@ def build_selector(el: dict) -> str:
 test_pairs = [
     (
         "tag: input | candidate_id: 1 | aria_label: Destination | placeholder: To? | text: To?",
-        "task is: Search for a flight from Toronto to New York. Type NYC into the destination field.\nPrevious actions: "
+        "task is: Search for a flight from Toronto to New York. Type NYC into the destination field.\nPrevious actions: ",
     ),
     (
         "tag: button | candidate_id: 2 | aria_label: Search | text: Search | is_clickable: true",
-        "task is: Search for a flight from Toronto to New York. Type NYC into the destination field.\nPrevious actions: "
+        "task is: Search for a flight from Toronto to New York. Type NYC into the destination field.\nPrevious actions: ",
     ),
 ]
 

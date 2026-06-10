@@ -23,7 +23,7 @@ argparser.add_argument("--output_dir", type=str, default="")
 def main():
     args = argparser.parse_args()
     print(f"Use model {args.model_path}")
-    print('Mind2Web - CANDIDATE GENERATION EVALUATE****')
+    print('mind2web-computer-use-agent - CANDIDATE GENERATION EVALUATE****')
     output_dir = args.output_dir if args.output_dir else args.model_path
     data_name = args.split_file
     eval_data = get_data_split(

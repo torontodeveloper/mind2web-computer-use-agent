@@ -1,7 +1,9 @@
 import os
 
-os.environ["HF_DATASETS_CACHE"] = "/content/drive/MyDrive/Mind2Web/hf_cache"
-os.environ["HF_HOME"] = "/content/drive/MyDrive/Mind2Web/hf_cache"
+os.environ["HF_DATASETS_CACHE"] = (
+    "/content/drive/MyDrive/mind2web-computer-use-agent/hf_cache"
+)
+os.environ["HF_HOME"] = "/content/drive/MyDrive/mind2web-computer-use-agent/hf_cache"
 import json
 import logging
 import pdb
