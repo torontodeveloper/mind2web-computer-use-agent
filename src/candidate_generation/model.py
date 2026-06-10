@@ -186,30 +186,22 @@ class CrossEncoder(CrossEncoder):
 
                     scaler.scale(loss_value).backward()
                 else:
-                    print("Logits finite:*****", torch.isfinite(logits).all().item())
-                    print("Labels finite:******", torch.isfinite(labels).all().item())
-                    print(
-                        "Labels min:*****",
-                        labels.min().item(),
-                        "Labels max:",
-                        labels.max().item(),
-                    )
-                    print("Loss finite:*****", torch.isfinite(loss_value).item())
                     # Check input features for NaN before forward pass
                     for k, v in features.items():
                         if isinstance(v, torch.Tensor) and torch.isnan(v).any():
                             print(f"[step {global_step}] ❌ NaN in INPUT: {k}")
                     model_predictions = self.model(**features, return_dict=True)
                     logits = activation_fct(model_predictions.logits)
-                    print("Logits finite:", torch.isfinite(logits).all().item())
-                    if isinstance(labels, torch.Tensor):
-                        print("Labels finite:", torch.isfinite(labels).all().item())
-                        print(
-                            "Labels min:",
-                            labels.min().item(),
-                            "Labels max:",
-                            labels.max().item(),
-                        )
+                    if global_step < 3:
+                        print("Logits finite:", torch.isfinite(logits).all().item())
+                        if isinstance(labels, torch.Tensor):
+                            print("Labels finite:", torch.isfinite(labels).all().item())
+                            print(
+                                "Labels min:",
+                                labels.min().item(),
+                                "Labels max:",
+                                labels.max().item(),
+                            )
 
                     if torch.isnan(logits).any() or torch.isinf(logits).any():
                         print(
