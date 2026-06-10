@@ -13,9 +13,21 @@ ROOT = HERE.parent.parent
 sys.path.append(str(ROOT))
 from candidate_generation.model import CrossEncoder
 
-device = torch.device("cpu") 
+device = torch.device("cpu")
+
+# Checkpoint location: override with MIND2WEB_CKPT, else use the Drive-synced
+# checkpoints written by the Colab training notebook.
+DEFAULT_CKPT = (
+    Path.home()
+    / "My Drive (kkakolla@andrew.cmu.edu)"
+    / "mind2web-computer-use-agent"
+    / "checkpoints"
+    / "candidate_generation"
+)
+CKPT_PATH = os.environ.get("MIND2WEB_CKPT", str(DEFAULT_CKPT))
+
 candidate_model = CrossEncoder(
-    "/Users/aruna/Library/CloudStorage/GoogleDrive-kkakolla@andrew.cmu.edu/My Drive/Mind2Web/checkpoints/candidate_generation",
+    CKPT_PATH,
     device=device,
     num_labels=1,
     max_length=512,
