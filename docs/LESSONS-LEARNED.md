@@ -99,7 +99,7 @@ pass was skipped — the model trained for thousands of steps while learning not
 
 ## Open TODOs
 
-- [ ] Confirm `next(model.model.parameters()).dtype` in Colab (expected fp16)
+- [x] Confirmed in Colab 2026-06-10: `model dtype: torch.float16` — root cause verified
 - [ ] Pin versions in notebook pip cell + retrain
 - [ ] Add consecutive-NaN abort to `model.py fit()`
 - [ ] Make `dataloader.py` respect `data.data_path` (remove hardcoded split_dir_map)
