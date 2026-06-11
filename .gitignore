@@ -38,6 +38,7 @@ LOG_FILE_PATH/
 angelinababy/
 venv/
 .env
+.venv
 
 # Hydra outputs
 outputs/

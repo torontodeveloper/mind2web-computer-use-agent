@@ -5,13 +5,13 @@ import sys
 import os
 from pathlib import Path
 from playwright.async_api import async_playwright
+from transformers import T5ForConditionalGeneration, AutoTokenizer
 
-
-# sys.path.append("/content/drive/MyDrive/Mind2Web/src/candidate_generation")
+# candidate_generation lives in src/, which must be on sys.path before its import
 HERE = Path(__file__).resolve()  # src/playwright/main.py
 ROOT = HERE.parent.parent
 sys.path.append(str(ROOT))
-from candidate_generation.model import CrossEncoder
+from candidate_generation.model import CrossEncoder  # noqa: E402
 
 device = torch.device("cpu")
 
@@ -32,7 +32,6 @@ candidate_model = CrossEncoder(
     num_labels=1,
     max_length=512,
 )
-import torch
 
 nan_param_names = []
 for name, param in candidate_model.model.named_parameters():
@@ -45,33 +44,33 @@ print("First few:", nan_param_names[:10])
 # ── Format functions must match dataloader.py exactly ────────
 
 
-def format_candidate_from_dom(el: dict) -> str:
+def format_candidate_from_dom(element: dict) -> str:
     """Reproduce format_candidate_simple() from dataloader.py using live DOM data."""
     parts = []
 
-    if el.get("tag"):
-        parts.append(f"tag: {el['tag']}")
-    if el.get("backend_node_id"):
-        parts.append(f"candidate_id: {el['backend_node_id']}")
+    if element.get("tag"):
+        parts.append(f"tag: {element['tag']}")
+    if element.get("backend_node_id"):
+        parts.append(f"candidate_id: {element['backend_node_id']}")
 
     # Map DOM attributes to the keys format_candidate_simple() looks for
     attr_map = {
-        "role": el.get("role", ""),
-        "type": el.get("type", ""),
-        "name": el.get("name", ""),
-        "title": el.get("title", ""),
-        "aria_label": el.get("aria_label", ""),  # note: underscore not hyphen
-        "placeholder": el.get("placeholder", ""),
-        "value": el.get("value", ""),
-        "is_clickable": el.get("is_clickable", ""),
-        "bounding_box_rect": el.get("bounding_box_rect", ""),
+        "role": element.get("role", ""),
+        "type": element.get("type", ""),
+        "name": element.get("name", ""),
+        "title": element.get("title", ""),
+        "aria_label": element.get("aria_label", ""),  # note: underscore not hyphen
+        "placeholder": element.get("placeholder", ""),
+        "value": element.get("value", ""),
+        "is_clickable": element.get("is_clickable", ""),
+        "bounding_box_rect": element.get("bounding_box_rect", ""),
     }
 
     for key, value in attr_map.items():
         if value not in (None, ""):
             parts.append(f"{key}: {value}")
 
-    return " | ".join(parts) if parts else str(el)
+    return " | ".join(parts) if parts else str(element)
 
 
 def build_query(task: str, previous_actions: list[str]) -> str:
@@ -167,11 +166,9 @@ def score_candidates(
 
 # ── Flan-T5 action prediction ─────────────────────────────────
 
-from transformers import T5ForConditionalGeneration, T5Tokenizer
 
-t5_tokenizer = T5Tokenizer.from_pretrained(
-    "osunlp/MindAct_ActionPrediction_flan-t5-base"
-)
+# OSU repo has no tokenizer files; use the base model's (identical vocab)
+t5_tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-base")
 t5_model = T5ForConditionalGeneration.from_pretrained(
     "osunlp/MindAct_ActionPrediction_flan-t5-base"
 )
@@ -212,16 +209,16 @@ def predict_action_t5(
 # ── Selector builder ─────────────────────────────────────────
 
 
-def build_selector(el: dict) -> str:
-    if el.get("aria_label"):
-        return f"[aria-label='{el['aria_label']}']"
-    if el.get("placeholder"):
-        return f"[placeholder='{el['placeholder']}']"
-    if el.get("name"):
-        return f"[name='{el['name']}']"
-    if el.get("text") and el["tag"] in ("button", "a"):
-        return f"{el['tag']}:has-text('{el['text'][:40]}')"
-    return el.get("tag", "div")
+def build_selector(elment: dict) -> str:
+    if elment.get("aria_label"):
+        return f"[aria-label='{elment['aria_label']}']"
+    if elment.get("placeholder"):
+        return f"[placeholder='{elment['placeholder']}']"
+    if elment.get("name"):
+        return f"[name='{elment['name']}']"
+    if elment.get("text") and elment["tag"] in ("button", "a"):
+        return f"{elment['tag']}:has-text('{elment['text'][:40]}')"
+    return elment.get("tag", "div")
 
 
 # ── Agent loop ───────────────────────────────────────────────
